@@ -612,6 +612,11 @@
 
 <button class="sound-toggle" id="soundToggle" title="Toggle sound">🔇</button>
 
+<!-- EDIT: replace nikah-music.mp3 with your own audio file's name (see instructions from Claude) -->
+<audio id="bgMusic" loop>
+  <source src="nikah-music.mp3" type="audio/mpeg">
+</audio>
+
 <!-- ================= HERO ================= -->
 <section class="hero">
   <div class="monogram">A&Z</div> <!-- EDIT: initials -->
@@ -943,11 +948,26 @@ document.querySelectorAll('.tilt-card').forEach(card=>{
   });
 });
 
-/* ---------- sound toggle (decorative — wire up an <audio> tag if you add music) ---------- */
+/* ---------- sound toggle (controls the #bgMusic <audio> element) ---------- */
 let soundOn=false;
+const bgMusic = document.getElementById('bgMusic');
 document.getElementById('soundToggle').addEventListener('click', function(){
-  soundOn=!soundOn;
-  this.textContent = soundOn ? '🔊' : '🔇';
+  const btn = this;
+  if(!bgMusic){ return; }
+  if(!soundOn){
+    bgMusic.volume = 0.5; // EDIT: 0.0 (silent) to 1.0 (full volume)
+    bgMusic.play().then(()=>{
+      soundOn = true;
+      btn.textContent = '🔊';
+    }).catch(()=>{
+      // Most likely the audio file isn't present yet at the path in the <audio> tag
+      alert("Couldn't play the music — check that your audio file is uploaded and the filename in the <audio> tag matches it exactly.");
+    });
+  } else {
+    bgMusic.pause();
+    soundOn = false;
+    btn.textContent = '🔇';
+  }
 });
 
 /* ---------- countdown (with per-digit flip animation) ---------- */
