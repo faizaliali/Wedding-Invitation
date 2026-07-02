@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="pageTitle">Ahmad & Zainab — Wedding Invitation</title>
+<title id="pageTitle">Mohammad Rahil & Zainab Noor — Wedding Invitation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Amiri:wght@400;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -575,11 +575,32 @@
     background:linear-gradient(135deg,#16281f,#0a140f);
     position:relative;
   }
+  .modal-photo img{
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
   .modal-photo .cap{
     position:absolute; bottom:0; left:0; right:0; padding:1rem 1.2rem;
-    background:linear-gradient(0deg, rgba(0,0,0,0.7), transparent);
+    background:linear-gradient(0deg, rgba(0,0,0,0.75), transparent);
     font-family:'Cormorant Garamond', serif; font-size:1.05rem;
+    z-index:2;
   }
+  .photo-nav{
+    position:absolute; top:1rem; right:1rem; z-index:3;
+    display:flex; gap:.5rem;
+  }
+  .photo-nav .nav-circle{
+    background:rgba(3,7,5,0.55); backdrop-filter:blur(3px);
+    width:34px; height:34px; font-size:0.95rem;
+  }
+  .photo-dots{
+    position:absolute; bottom:.6rem; left:1.2rem; right:1.2rem; z-index:2;
+    display:flex; gap:.4rem;
+  }
+  .photo-dots .p-dot{
+    height:3px; flex:1; border-radius:3px; background:rgba(255,255,255,0.25);
+    transition:background .25s ease;
+  }
+  .photo-dots .p-dot.active{ background:var(--gold); }
   .modal-details p.venue{ color:var(--cream); font-weight:400; }
   .modal-list{ list-style:none; margin-top:1.2rem; }
   .modal-list li{ display:flex; gap:.6rem; margin-bottom:.9rem; font-size:0.9rem; color:var(--text-soft); }
@@ -598,7 +619,7 @@
 
 <div class="curtain" id="curtain">
   <div class="curtain-mark">
-    <div class="pl-monogram">A&amp;Z</div>
+    <div class="pl-monogram">R&amp;Z</div>
     <div class="pl-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
     <div class="pl-translation">In the name of Allah, the Most Gracious, the Most Merciful</div>
     <div class="pl-bar-wrap">
@@ -613,15 +634,15 @@
 <button class="sound-toggle" id="soundToggle" title="Toggle sound">🔇</button>
 
 <!-- EDIT: replace nikah-music.mp3 with your own audio file's name (see instructions from Claude) -->
-<audio id="bgMusic" loop autoplay>
+<audio id="bgMusic" loop preload="none">
   <source src="nikah-music.mp3" type="audio/mpeg">
 </audio>
 
 <!-- ================= HERO ================= -->
 <section class="hero">
-  <div class="monogram">A&Z</div> <!-- EDIT: initials -->
+  <div class="monogram">R&Z</div> <!-- EDIT: initials -->
   <h1>
-    <span class="line-mask"><span class="line-inner">Ahmad Raza</span></span> <!-- EDIT: groom name -->
+    <span class="line-mask"><span class="line-inner">Mohammad Rahil</span></span> <!-- EDIT: groom name -->
     <span class="line-mask amp"><span class="line-inner">&amp;</span></span>
     <span class="line-mask"><span class="line-inner">Zainab Noor</span></span> <!-- EDIT: bride name -->
   </h1>
@@ -645,7 +666,7 @@
   <svg class="divider reveal" viewBox="0 0 340 30" fill="none"><path d="M10 15c40-20 80 20 120 0s80-20 120 0" stroke="#c9a15a" stroke-width="1" opacity="0.6"/><rect x="163" y="10" width="10" height="10" transform="rotate(45 168 15)" fill="#c9a15a"/></svg>
 
   <div class="letter-card reveal-scale">
-    <div class="pl-monogram">A&amp;Z</div>
+    <div class="pl-monogram">R&amp;Z</div>
     <div class="letter-greeting" id="letterGreeting">Dear Guest,</div> <!-- personalized automatically from ?to= in the URL -->
     <p>Some news can only be shared the way it has always been shared in our families — personally, and with love. By the immense grace of Allah, our two families are becoming one.</p> <!-- EDIT: letter paragraph 1 -->
     <p>We would be honoured to have you beside us in these days of joy: your smile in our gathering, your dua in our hearts, your presence completing our happiness.</p> <!-- EDIT: letter paragraph 2 -->
@@ -661,12 +682,12 @@
     <!-- EDIT: names/text below — kept duplicated (same sequence twice) so the CSS loop is seamless -->
     <span>Zainab</span><span class="m-dot">♦</span>
     <span class="m-arabic">زينب</span><span class="m-dot">♥</span>
-    <span>Ahmad</span><span class="m-dot">♦</span>
+    <span>Rahil</span><span class="m-dot">♦</span>
     <span class="m-arabic">أحمد</span><span class="m-dot">♥</span>
     <span>Zainab</span><span class="m-dot">♦</span>
     <span class="m-arabic">زينب</span><span class="m-dot">♥</span>
-    <span>Ahmad</span><span class="m-dot">♦</span>
-    <span class="m-arabic">أحمد</span><span class="m-dot">♥</span>
+    <span>Rahil</span><span class="m-dot">♦</span>
+    <span class="m-arabic">راهيل</span><span class="m-dot">♥</span>
   </div>
 </div>
 
@@ -683,7 +704,7 @@
     <div class="event-card reveal tilt-card" style="--d:.05s" onclick="openModal('nikah')">
       <span class="arabic">نِكَاح</span>
       <h3>Nikah</h3>
-      <div class="event-meta">📅 <span>Thursday, 9 July 2026<br>7:00 PM onwards</span></div> <!-- EDIT: date/time -->
+      <div class="event-meta">📅 <span>Thursday, 9 December 2026<br>7:00 PM onwards</span></div> <!-- EDIT: date/time -->
       <div class="event-meta">📍 <span>Al-Azeem Convention Hall</span></div> <!-- EDIT: venue -->
       <div class="card-link">View Details ↗</div>
     </div>
@@ -691,7 +712,7 @@
     <div class="event-card reveal tilt-card" style="--d:.2s" onclick="openModal('valima')">
       <span class="arabic">وَلِيمَة</span>
       <h3>Valima</h3>
-      <div class="event-meta">📅 <span>Saturday, 11 July 2026<br>8:00 PM onwards</span></div> <!-- EDIT: date/time -->
+      <div class="event-meta">📅 <span>Saturday, 11 December 2026<br>8:00 PM onwards</span></div> <!-- EDIT: date/time -->
       <div class="event-meta">📍 <span>CMA Palace</span></div> <!-- EDIT: venue -->
       <div class="card-link">View Details ↗</div>
     </div>
@@ -804,13 +825,15 @@
 
 <!-- ================= CLOSING ================= -->
 <section class="closing">
-  <div class="monogram reveal-scale">A&Z</div> <!-- EDIT: initials -->
+  <div class="monogram reveal-scale">R&Z</div> <!-- EDIT: initials -->
   <div class="arabic reveal" style="margin-top:1.6rem;">بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْك</div>
   <p class="translation reveal">May Allah bless us both, shower us with His mercy, and unite us in goodness, love, and righteousness. Ameen.</p>
   <svg class="divider reveal" viewBox="0 0 340 30" fill="none"><path d="M10 15c40-20 80 20 120 0s80-20 120 0" stroke="#c9a15a" stroke-width="1" opacity="0.6"/><rect x="163" y="10" width="10" height="10" transform="rotate(45 168 15)" fill="#c9a15a"/></svg>
-  <h2 class="reveal">Ahmad Raza &amp; Zainab Noor</h2> <!-- EDIT: names -->
+  <h2 class="reveal">Mohammad Rahil &amp; Zainab Noor</h2> <!-- EDIT: names -->
   <div class="tagline">Awaiting Your Gracious Presence</div>
-  <div class="credit">Designed &amp; Developed with <span>♥</span> for our special day</div>
+  <div class="credit">Designed &amp; Developed by Faiz(9174512096)</div>
+
+  <!-- <div class="credit">Designed &amp; Developed with <span>♥</span> for our special day</div> -->
 </section>
 
 <!-- ================= MODALS ================= -->
@@ -822,7 +845,13 @@
     </div>
     <div class="modal-body">
       <div class="modal-photo">
+        <img id="modalImg" src="" alt="" style="display:none;">
+        <div class="photo-nav">
+          <div class="nav-circle" onclick="shiftPhoto(-1)">‹</div>
+          <div class="nav-circle" onclick="shiftPhoto(1)">›</div>
+        </div>
         <div class="cap" id="modalCaption">Bathed in light, the hall stood ready to host a beautiful beginning</div>
+        <div class="photo-dots" id="photoDots"></div>
       </div>
       <div class="modal-details">
         <div class="event-meta">📅 <span id="modalDate">Thursday, 9 July 2026 · 7:00 PM onwards</span></div>
@@ -856,7 +885,7 @@
   const letterEl = document.getElementById('letterGreeting');
   if(letterEl) letterEl.textContent = 'Dear ' + guestName + ',';
   const titleEl = document.getElementById('pageTitle');
-  if(titleEl) titleEl.textContent = `You're Invited, ${guestName} — Ahmad & Zainab`;
+  if(titleEl) titleEl.textContent = `You're Invited, ${guestName} — Mohammad Rahil & Zainab Noor`;
 })();
 
 /* ---------- stars ---------- */
@@ -972,7 +1001,7 @@ document.getElementById('soundToggle').addEventListener('click', function(){
 
 /* ---------- countdown (with per-digit flip animation) ---------- */
 // EDIT: set this to your Nikah date/time
-const eventDate = new Date('2026-07-09T19:00:00');
+const eventDate = new Date('2026-10-09T19:00:00');
 const cdFields = ['days','hours','mins','secs'];
 const cdPrev = { days:null, hours:null, mins:null, secs:null };
 
@@ -1117,12 +1146,13 @@ function releaseLantern(){
 }
 
 /* ---------- event modal ---------- */
-// EDIT: edit venue details, bullet points, and map links here
+// EDIT: edit venue details, bullet points, map links, and PHOTOS here.
+// For photos: use a web image URL (https://...) OR a local filename (e.g. "images/nikah-1.jpg")
+// if you've added your own photos to the project folder next to this HTML file.
 const eventData = {
   nikah: {
     title: 'Nikah نِكَاح',
-    caption: 'Bathed in light, the hall stood ready to host a beautiful beginning',
-    date: 'Thursday, 9 July 2026 · 7:00 PM onwards',
+    date: 'Thursday, 9 December 2026 · 7:00 PM onwards',
     address: 'Al-Azeem Convention Hall<br>Haines Road, Shivaji Nagar, Bangalore – 560051',
     list: [
       'Vows exchanged, blessings given, two families becoming one',
@@ -1130,12 +1160,16 @@ const eventData = {
       'An intimate dinner follows, for quiet celebration with those closest'
     ],
     venueName: 'Al-Azeem Convention Hall',
-    mapUrl: 'https://maps.google.com/?q=Al-Azeem+Convention+Hall+Bangalore'
+    mapUrl: 'https://maps.google.com/?q=Al-Azeem+Convention+Hall+Bangalore',
+    photos: [
+      { src: 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAGAhxLIpZxTzr4NeWefGvoH-7lahp4UcylkFopFwyBCL_49YkyfoV-k_jvc5R0ICU8xaNH00p5cbZ1A_Ic15E80UCp_8EglEf6vv1Mx708Dw0UKcGYyP3h4rtkwLYMTXtIHbIjs=s1360-w1360-h1020-rw', caption: 'Bathed in light, the hall stood ready to host a beautiful beginning' },
+      { src: 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAEr-LqiMuSlu82xYrP1gadIm7OuNKFmIFGZ1PMeX2JHVwC-PIQrNPVIKTrNdBoBjSVjmh9I8FJeaTui8DewV9JPZNErf0sg90Sw0yxZ8UOCEEmL1w76noxV8K8qxuvhAfKVYphsSZF77m9s=s1360-w1360-h1020-rw', caption: 'A place made ready for vows and blessings' }
+      // EDIT: add or remove photo objects here — each needs a src and a caption
+    ]
   },
   valima: {
     title: 'Valima وَلِيمَة',
-    caption: 'A banquet stretching as far as the conversations would go',
-    date: 'Saturday, 11 July 2026 · 8:00 PM onwards',
+    date: 'Saturday, 11 December 2026 · 8:00 PM onwards',
     address: 'CMA Palace<br>Bangalore, Karnataka',
     list: [
       'A feast, endless conversations, and enough photos to last several lifetimes',
@@ -1143,20 +1177,65 @@ const eventData = {
       'The best moments aren\'t on the schedule — they just happen'
     ],
     venueName: 'CMA Palace',
-    mapUrl: 'https://maps.google.com/?q=CMA+Palace+Bangalore'
+    mapUrl: 'https://maps.google.com/?q=CMA+Palace+Bangalore',
+    photos: [
+      { src: 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAGSnTAhoR49tOdSlhuU2Tb_AYiFoUgYYzKVLiLoI8L9WUK-WPxYBGM4nPfesLUIVqIUej-yqIo8S9T3VPea0mFcL71q7pe6Wyk8zFUSljtRQmknMBOe0Xdhg-0-0SzGrzlky4Q=s1360-w1360-h1020-rw', caption: 'A banquet stretching as far as the conversations would go' },
+      { src: 'https://lh3.googleusercontent.com/gps-cs-s/APNQkAHgrKESSThfSlZ0mbS-4SduqFYkr7QC6WhJ39d47YQGYbgbsM_6xOgqL0KiHWn3AdLb3jiAlO_yHUKsZjfSJvsYNL31yb-r3q-yZTnce5F3z6RNFBOJrTIfARoqFN5MhdGXxRw=s1360-w1360-h1020-rw', caption: 'An evening set for celebration' }
+      // EDIT: add or remove photo objects here — each needs a src and a caption
+    ]
   }
 };
 
+let currentEventKey = null;
+let currentPhotoIndex = 0;
+
+function renderPhoto(){
+  const d = eventData[currentEventKey];
+  const photo = d.photos[currentPhotoIndex];
+  const img = document.getElementById('modalImg');
+  const cap = document.getElementById('modalCaption');
+
+  cap.textContent = photo.caption || '';
+
+  img.onload = ()=>{ img.style.display = 'block'; };
+  img.onerror = ()=>{
+    // No image found at that path yet — keep the soft gradient background instead of a broken icon
+    img.style.display = 'none';
+  };
+  img.src = photo.src;
+  img.alt = photo.caption || d.title;
+
+  const dotsWrap = document.getElementById('photoDots');
+  dotsWrap.innerHTML = '';
+  d.photos.forEach((_, i)=>{
+    const dot = document.createElement('div');
+    dot.className = 'p-dot' + (i === currentPhotoIndex ? ' active' : '');
+    dotsWrap.appendChild(dot);
+  });
+
+  const navWrap = document.querySelector('.photo-nav');
+  if(navWrap) navWrap.style.display = d.photos.length > 1 ? 'flex' : 'none';
+}
+
+function shiftPhoto(dir){
+  const d = eventData[currentEventKey];
+  if(!d || d.photos.length < 2) return;
+  currentPhotoIndex = (currentPhotoIndex + dir + d.photos.length) % d.photos.length;
+  renderPhoto();
+}
+
 function openModal(key){
   const d = eventData[key];
+  currentEventKey = key;
+  currentPhotoIndex = 0;
   document.getElementById('modalTitle').textContent = d.title;
-  document.getElementById('modalCaption').textContent = d.caption;
   document.getElementById('modalDate').textContent = d.date;
   document.getElementById('modalAddress').innerHTML = d.address;
   document.getElementById('modalVenueName').textContent = d.venueName;
   document.getElementById('modalMapLink').href = d.mapUrl;
   const list = document.getElementById('modalList');
   list.innerHTML = d.list.map(i=>`<li>${i}</li>`).join('');
+  renderPhoto();
   document.getElementById('modalOverlay').classList.add('active');
 }
 function closeModal(){
