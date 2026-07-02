@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guest Link Generator — For Your Use Only</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#070f0b; --bg-1:#0c1b14;
+    --gold:#c9a15a; --gold-light:#e8cf8a; --gold-soft:rgba(201,161,90,0.35);
+    --cream:#f3ead9; --text-soft:rgba(243,234,217,0.72); --text-faint:rgba(243,234,217,0.45);
+    --card:rgba(255,255,255,0.03); --card-border:rgba(201,161,90,0.18); --radius:18px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; min-height:100vh; background:var(--bg-0); color:var(--cream);
+    font-family:'Jost', sans-serif; font-weight:300;
+    background-image:radial-gradient(circle at 20% 10%, rgba(201,161,90,0.07), transparent 40%);
+  }
+  .wrap{ max-width:840px; margin:0 auto; padding:4rem 1.5rem 6rem; }
+  h1{ font-family:'Cormorant Garamond', serif; font-weight:600; font-size:2.4rem; margin:0 0 .3rem; }
+  .sub{ color:var(--text-soft); margin-bottom:.5rem; line-height:1.6; }
+  .notice{
+    background:rgba(201,161,90,0.08); border:1px solid var(--card-border); border-radius:12px;
+    padding:.9rem 1.2rem; font-size:0.86rem; color:var(--gold-light); margin:1.4rem 0 2.2rem;
+  }
+  label{ display:block; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:.5rem; }
+  input, textarea{
+    width:100%; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.14);
+    border-radius:12px; padding:.85rem 1rem; color:var(--cream); font-family:'Jost',sans-serif;
+    font-size:0.94rem; margin-bottom:1.4rem; resize:vertical;
+  }
+  input:focus, textarea:focus{ outline:none; border-color:var(--gold); }
+  ::placeholder{ color:var(--text-faint); }
+  .btn{
+    display:inline-flex; align-items:center; gap:.5rem; padding:.85rem 1.7rem; border-radius:999px;
+    font-size:0.78rem; letter-spacing:0.15em; text-transform:uppercase; font-weight:500; cursor:pointer;
+    border:none; background:linear-gradient(135deg, var(--gold-light), var(--gold)); color:#1a1206;
+  }
+  .btn:hover{ opacity:.92; }
+  .btn-ghost{
+    background:none; border:1px solid var(--card-border); color:var(--cream); padding:.6rem 1.1rem; font-size:0.72rem;
+  }
+  .btn-ghost:hover{ border-color:var(--gold); color:var(--gold-light); }
+  table{ width:100%; border-collapse:collapse; margin-top:2.2rem; }
+  th{ text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); padding:.6rem .4rem; border-bottom:1px solid var(--card-border); }
+  td{ padding:.9rem .4rem; border-bottom:1px solid rgba(255,255,255,0.06); font-size:0.9rem; vertical-align:middle; }
+  .link-cell{ color:var(--text-soft); word-break:break-all; font-size:0.82rem; }
+  .row-actions{ display:flex; gap:.5rem; flex-wrap:wrap; }
+  .copied{ color:var(--gold-light) !important; }
+  .empty{ color:var(--text-faint); font-style:italic; margin-top:2rem; }
+  .top-actions{ display:flex; gap:.8rem; flex-wrap:wrap; margin-top:.5rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Guest Link Generator</h1>
+  <p class="sub">Paste your invite's web address below, then list your guests — one name per line. This page builds a personalized link for each person that greets them by name when they open it.</p>
+  <div class="notice">🔒 This tool is for your own use — don't send this page to guests. Only share the individual links it generates.</div>
+
+  <label for="baseUrl">Your invite's link</label>
+  <input id="baseUrl" type="text" placeholder="e.g. https://yourname.github.io/wedding-invitation.html">
+
+  <label for="guestNames">Guest names (one per line)</label>
+  <textarea id="guestNames" rows="8" placeholder="Rahil Khan
+Munna Shaik
+Nikhath Ara
+Shafiya Fairoz"></textarea>
+
+  <div class="top-actions">
+    <button class="btn" onclick="generateLinks()">✨ Generate Links</button>
+    <button class="btn btn-ghost" onclick="copyAll()">Copy All as List</button>
+  </div>
+
+  <table id="resultsTable" style="display:none;">
+    <thead><tr><th>Guest</th><th>Personal Link</th><th></th></tr></thead>
+    <tbody id="resultsBody"></tbody>
+  </table>
+  <p class="empty" id="emptyMsg">Your generated links will appear here.</p>
+</div>
+
+<script>
+function generateLinks(){
+  const base = document.getElementById('baseUrl').value.trim();
+  const namesRaw = document.getElementById('guestNames').value;
+  const names = namesRaw.split('\n').map(n=>n.trim()).filter(Boolean);
+  const table = document.getElementById('resultsTable');
+  const body = document.getElementById('resultsBody');
+  const emptyMsg = document.getElementById('emptyMsg');
+  body.innerHTML = '';
+
+  if(!base){ alert('Paste your invite link first.'); return; }
+  if(names.length === 0){ alert('Add at least one guest name.'); return; }
+
+  names.forEach(name=>{
+    const url = base + (base.includes('?') ? '&' : '?') + 'to=' + encodeURIComponent(name).replace(/%20/g,'+');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${escapeHtml(name)}</td>
+      <td class="link-cell">${url}</td>
+      <td>
+        <div class="row-actions">
+          <button class="btn-ghost" onclick="copyText(this, '${url.replace(/'/g,"\\'")}')">Copy</button>
+          <a class="btn-ghost" style="text-decoration:none; display:inline-block;" target="_blank"
+             href="https://wa.me/?text=${encodeURIComponent('You are invited! ' + url)}">WhatsApp</a>
+        </div>
+      </td>`;
+    body.appendChild(tr);
+  });
+
+  table.style.display = 'table';
+  emptyMsg.style.display = 'none';
+}
+
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function copyText(btn, text){
+  navigator.clipboard.writeText(text).then(()=>{
+    const original = btn.textContent;
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent = original; btn.classList.remove('copied'); }, 1400);
+  });
+}
+
+function copyAll(){
+  const rows = [...document.querySelectorAll('#resultsBody tr')];
+  if(rows.length === 0){ alert('Generate links first.'); return; }
+  const lines = rows.map(r=>{
+    const cells = r.querySelectorAll('td');
+    return `${cells[0].textContent}: ${cells[1].textContent}`;
+  });
+  navigator.clipboard.writeText(lines.join('\n')).then(()=> alert('All links copied to clipboard.'));
+}
+</script>
+</body>
+</html>
